@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">UrbanDictionaryDemo</string>
+    <string name="search_hint">Enter search term</string>
+
+    <string name="searching">Searching</string>
+    <string name="thumbsUp">Thumbs up</string>
+    <string name="thumbsDown">Thumbs down</string>
+</resources>

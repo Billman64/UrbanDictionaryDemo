@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#002299</color>
+    <color name="colorPrimaryDark">#002244</color>
+    <color name="colorAccent">#EFFF00</color>
+
+    <color name="viewBack">#3129</color>
+    <color name="thumbsText">#888</color>
+    <color name="word">#134FE6</color>
+    <color name="definition">#333</color>
+
+<!-- defaults
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    -->
+</resources>
