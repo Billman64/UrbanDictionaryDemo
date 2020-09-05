@@ -33,14 +33,18 @@
             android:autofillHints="term"
             android:background="@drawable/rounded_corners"
             android:paddingLeft="16dp"
+            android:paddingStart="16dp"
             android:paddingTop="8dp"
             android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
             tools:text="rat-licker"/>
+
+        <!-- TODO:// fix: icon does not show on a small screen (3.3 WQVGA)-->
         <Button
             android:id="@+id/searchButton"
+            android:background="@drawable/rounded_corners_button"
             android:foreground="@drawable/ic_search_black_24dp"
             android:foregroundTint="#ddd"
-            android:background="@drawable/rounded_corners_button"
             android:shadowDx="16"
             android:shadowDy="16"
             android:shadowRadius="4"
@@ -50,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:layout_marginRight="32dp"
+            android:layout_marginEnd="32dp"
             app:layout_constraintLeft_toRightOf="@+id/searchTerm"
             app:layout_constraintBottom_toBottomOf="@+id/searchTerm" />
     </LinearLayout>

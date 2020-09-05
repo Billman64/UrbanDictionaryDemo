@@ -21,4 +21,6 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.github.billman64.urbandictionarydemo", appContext.packageName)
     }
+
+    
 }

@@ -2,6 +2,7 @@
     @author: Bill Lugo
 
     Copyrights:
+        Data source: Urban Dictionary (UrbanDictionary.com)
         Background photo by Devon Delrio is licensed under Creative Commons CC0 (Public Domain). Source: https://pixy.org/107734/
  */
 
@@ -34,34 +35,36 @@ class MainActivity : AppCompatActivity() {
 
         button.setOnClickListener{
             Toast.makeText(this,"network API call to be implemented", Toast.LENGTH_SHORT).show()
+
+            // temporary mock data
+            var list = ArrayList<WordItem>()
+            list.add(
+                WordItem(
+                    "Clock Method",
+                    "A method of guessing on a multiple choice test that involves looking at the position of the second hand. If the hand is between 12 and 3 the guess is A. If the hand is between 3 and 6 the guess is B. Between 6 and 9 guess C. Between 9 and 12 guess D.",
+                    10,
+                    20
+                )
+            )
+            list.add(WordItem("aaa", "car club", 30, 40))
+            list.add(
+                WordItem(
+                    "aa",
+                    "alcoholics anonymous",
+                    50,
+                    60
+                )
+            )
+
+
+            // populate recyclerView, using a custom adapter
+            var adapter = WordAdapter(list)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(this)
         }
 
 
-        // temporary mock data
-        var list = ArrayList<WordItem>()
-        list.add(
-            WordItem(
-                "Clock Method",
-                "A method of guessing on a multiple choice test that involves looking at the position of the second hand. If the hand is between 12 and 3 the guess is A. If the hand is between 3 and 6 the guess is B. Between 6 and 9 guess C. Between 9 and 12 guess D.",
-                10,
-                20
-            )
-        )
-        list.add(WordItem("aaa", "car club", 30, 40))
-        list.add(
-            WordItem(
-                "aa",
-                "alcoholics anonymous",
-                50,
-                60
-            )
-        )
 
-
-        // populate recyclerView, using a custom adapter
-        var adapter = WordAdapter(list)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
 
 
     }
