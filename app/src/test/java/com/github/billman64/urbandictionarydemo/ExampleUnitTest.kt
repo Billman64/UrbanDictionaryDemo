@@ -1,6 +1,7 @@
 package com.github.billman64.urbandictionarydemo
 
 import android.content.ContentValues.TAG
+import android.util.Log
 
 import com.github.billman64.urbandictionarydemo.ModelView.HTTPHandler
 import org.junit.Test
@@ -30,8 +31,8 @@ class ExampleUnitTest {
     @Test
     fun httpHandler_canConnect(){
         val handler = HTTPHandler()
-        val result:String? = handler.startHttpRequest(URL("http://www.google.com"))
-
+        val result:String? = handler.startHttpRequest(URL("http://www.google.com")).toString()
+        Log.d(TAG, "HTTPHandler result: "+ result)
         assertNotNull(result)
     }
 

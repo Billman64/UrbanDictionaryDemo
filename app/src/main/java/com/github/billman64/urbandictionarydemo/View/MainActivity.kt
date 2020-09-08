@@ -27,17 +27,36 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.d(TAG, "onCreate()")
 
+        var list = ArrayList<WordItem>()
+        var recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        if(savedInstanceState!=null){
+//            var tempWordItem = WordItem(savedInstanceState?.getString("word0"),savedInstanceState.getString("def0"),"tUp","tDown")
+//            tempWordItem.mWord = savedInstanceState.getString("word0")
+//
+//
+//            list.add(savedInstanceState.getString("word0"))
+
+
+
+        }
+
+        var adapter = WordAdapter(list)
+        recyclerView.adapter = adapter
+
         //TODO: load cached data on orientation change
 
 
-        var recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+
         val button:Button = findViewById(R.id.searchButton)
 
         button.setOnClickListener{
             Toast.makeText(this,"network API call to be implemented", Toast.LENGTH_SHORT).show()
 
             // temporary mock data
-            var list = ArrayList<WordItem>()
+
             list.add(
                 WordItem(
                     "Clock Method",
@@ -46,6 +65,14 @@ class MainActivity : AppCompatActivity() {
                     20
                 )
             )
+
+            var bundle:Bundle? = null
+            bundle?.putString("word0", list[0].word)
+            bundle?.putString("def0", list[0].definition)
+            bundle?.putInt("tUp0", list[0].thumbsUp)
+            bundle?.putInt("tDown0", list[0].thumbsDown)
+            savedInstanceState?.putParcelable("list",bundle)
+
             list.add(WordItem("aaa", "car club", 30, 40))
             list.add(
                 WordItem(

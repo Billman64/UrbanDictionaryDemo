@@ -55,7 +55,7 @@ class HTTPHandler {
     private fun streamToString(`is`: InputStream): String {
         val bufferedReader = BufferedReader(InputStreamReader(`is`))
         val sb = StringBuilder()
-        var inputLine = ""
+        var inputLine:String? = ""
 
 
         // InputStream -> StringBuilder
@@ -63,7 +63,8 @@ class HTTPHandler {
             // while(inputLine = bufferedReader.readLine()){ // Kotlin does not support assignment within a condition of a while()
 
             // Append, one line of data at time from the bufferedReader
-            while({inputLine = bufferedReader.readLine(); inputLine}()!=null){
+            while( {inputLine = bufferedReader.readLine(); inputLine}() !=null){
+                Log.d(TAG, "HTTPHandler - inputLine: $inputLine")
                 sb.append(inputLine).append("\n")
             }
 
