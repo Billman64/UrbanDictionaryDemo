@@ -8,8 +8,8 @@
 
 package com.github.billman64.urbandictionarydemo.View
 
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
@@ -18,81 +18,96 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.billman64.urbandictionarydemo.Model.WordAdapter
 import com.github.billman64.urbandictionarydemo.Model.WordItem
 import com.github.billman64.urbandictionarydemo.R
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     val TAG:String="Nike demo"
+    private var list = ArrayList<WordItem>()
+    private val mockData = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.d(TAG, "onCreate()")
 
-        var list = ArrayList<WordItem>()
-        var recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-
+        // Set up recyclerView
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = WordAdapter(ArrayList())
 
-        if(savedInstanceState!=null){
-//            var tempWordItem = WordItem(savedInstanceState?.getString("word0"),savedInstanceState.getString("def0"),"tUp","tDown")
-//            tempWordItem.mWord = savedInstanceState.getString("word0")
-//
-//
-//            list.add(savedInstanceState.getString("word0"))
+        // Log whether or not retrieving data from a prior activity instance.
+        savedInstanceState?.let{Log.d(TAG, "onCreate() with a savedInstanceState")} ?: Log.d(TAG, "onCreate()")
 
-
-
-        }
-
-        var adapter = WordAdapter(list)
-        recyclerView.adapter = adapter
-
-        //TODO: load cached data on orientation change
-
-
-
-        val button:Button = findViewById(R.id.searchButton)
+        // Button functionality - initiate API call
+        val button:Button = searchButton
 
         button.setOnClickListener{
             Toast.makeText(this,"network API call to be implemented", Toast.LENGTH_SHORT).show()
 
-            // temporary mock data
+            // reset list data
+            list.clear()
 
-            list.add(
-                WordItem(
-                    "Clock Method",
-                    "A method of guessing on a multiple choice test that involves looking at the position of the second hand. If the hand is between 12 and 3 the guess is A. If the hand is between 3 and 6 the guess is B. Between 6 and 9 guess C. Between 9 and 12 guess D.",
-                    10,
-                    20
+            // API call or mock data
+            if(!mockData) {
+
+            } else {
+
+                // mock data for testing purposes
+
+                list.add(
+                    WordItem(
+                        "Clock Method",
+                        "A method of guessing on a multiple choice test that involves looking at the position of the second hand. If the hand is between 12 and 3 the guess is A. If the hand is between 3 and 6 the guess is B. Between 6 and 9 guess C. Between 9 and 12 guess D.",
+                        10,
+                        20
+                    )
                 )
-            )
 
-            var bundle:Bundle? = null
-            bundle?.putString("word0", list[0].word)
-            bundle?.putString("def0", list[0].definition)
-            bundle?.putInt("tUp0", list[0].thumbsUp)
-            bundle?.putInt("tDown0", list[0].thumbsDown)
-            savedInstanceState?.putParcelable("list",bundle)
+                list.add(WordItem("aaa", "car club", 30, 40))
+                list.add(WordItem("bbb", "better business bureau", 12, 2))
+                list.add(WordItem("aa", "alcoholics anonymous", 50, 60))
 
-            list.add(WordItem("aaa", "car club", 30, 40))
-            list.add(
-                WordItem(
-                    "aa",
-                    "alcoholics anonymous",
-                    50,
-                    60
-                )
-            )
+                recyclerView.adapter = WordAdapter(list)    // update recyclerView
 
-
-            // populate recyclerView, using a custom adapter
-            var adapter = WordAdapter(list)
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = LinearLayoutManager(this)
+                Log.d(TAG, "Button pressed. adapter count: " + WordAdapter(list).itemCount)
+            }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        Log.d(TAG, "onSaveInstanceState()")
+
+        // Gather recyclerView data via the list ArrayList<>
+        val saveList = list
+        Log.d(TAG," adapter count: "+ WordAdapter(saveList).itemCount)
+
+        // Pass the data on for the next activity instance.
+        outState.putParcelableArrayList("list", saveList)
 
 
+        // test code - make sure data is retrievable
+        val testList:ArrayList<WordItem>? = outState.getParcelableArrayList("list") // test outState list
+        Log.d(TAG," getParcelable list count: ${testList?.count()}")
+    }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
 
+        Log.d(TAG, "onRestoreInstanceState")
+
+        // Gather data from savedInstanceState (passed from previous activity instance)
+        val restoreList:ArrayList<WordItem>? = savedInstanceState.getParcelableArrayList<WordItem>("list")
+        Log.d(TAG, " restoreList count: "+ restoreList?.count())
+
+        // If there is data, update the recyclerView (through an adapter).
+        restoreList?.let{
+            list = restoreList      // Restore original list listArray, so that future operations on it will also be updated
+            val adapter = WordAdapter(restoreList)
+            recyclerView.adapter = adapter
+            Log.d(TAG, " recyclerView restored. Adapter item count: "+ adapter.itemCount)
+//            Log.d(TAG, " recyclerView last word: "+ recyclerView?.getChildAt(adapter.itemCount-1)?.word?.text.toString() )
+        }
 
     }
 }
