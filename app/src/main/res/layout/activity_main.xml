@@ -39,11 +39,12 @@
             android:layout_marginStart="32dp"
             tools:text="rat-licker"/>
 
-        <!-- TODO:// fix: icon does not show on a small screen (3.3 WQVGA)-->
+        <!-- TODO:// fix: icon does not show on a small screen (3.3 WQVGA) Possible foregroundTint alternative needed. -->
         <Button
             android:id="@+id/searchButton"
             android:background="@drawable/rounded_corners_button"
             android:foreground="@drawable/ic_search_black_24dp"
+            android:src="@drawable/ic_search_black_24dp"
             android:foregroundTint="#ddd"
             android:shadowDx="16"
             android:shadowDy="16"
@@ -66,9 +67,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_layout">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@id/search_layout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.billman64.urbandictionarydemo.Model.WordAdapter
@@ -33,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = WordAdapter(ArrayList())
+
+        // ViewModel provider
+//        var vm = ViewModelProviders.of(this)
+//        var a: LiveData
 
         // Log whether or not retrieving data from a prior activity instance.
         savedInstanceState?.let{Log.d(TAG, "onCreate() with a savedInstanceState")} ?: Log.d(TAG, "onCreate()")

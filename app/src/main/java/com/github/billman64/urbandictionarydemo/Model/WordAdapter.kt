@@ -3,6 +3,7 @@ package com.github.billman64.urbandictionarydemo.Model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.billman64.urbandictionarydemo.R
@@ -30,6 +31,8 @@ class WordAdapter(private val wordList: ArrayList<WordItem>): RecyclerView.Adapt
         holder.definitionView.text = currentItem.definition
         holder.thumbsUpView.text = currentItem.thumbsUp.toString()
         holder.thumbsDownView.text = currentItem.thumbsDown.toString()
+
+        holder.itemView.animation = AnimationUtils.loadAnimation(holder.itemView.context,R.anim.fade_translate) // custom, minimal animation
 
         // The less is done here, the better the performance, since onBindViewHolder is called frequently.
     }
