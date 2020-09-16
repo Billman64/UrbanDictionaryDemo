@@ -60,6 +60,42 @@
             app:layout_constraintBottom_toBottomOf="@+id/searchTerm" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/sortBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/search_layout"
+        android:background="@color/viewBack"
+        android:gravity="left"
+        android:paddingBottom="8dp"
+        android:paddingLeft="24dp"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/sort_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort"
+            style="@style/Definition" />
+        <ImageView
+            android:id="@+id/sort_thumbs_up"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_thumb_up_black_24dp" />
+        <ImageView
+            android:id="@+id/sort_thumbs_down"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_thumb_down_black_24dp" />
+
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -67,7 +103,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_layout" />
+        app:layout_constraintTop_toBottomOf="@id/sortBar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

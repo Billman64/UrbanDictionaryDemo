@@ -5,4 +5,6 @@
     <string name="searching">Searching</string>
     <string name="thumbsUp">Thumbs up</string>
     <string name="thumbsDown">Thumbs down</string>
+
+    <string name="sort">sort</string>
 </resources>

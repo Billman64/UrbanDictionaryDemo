@@ -8,11 +8,15 @@
 
 package com.github.billman64.urbandictionarydemo.View
 
+import android.opengl.Visibility
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,9 +60,14 @@ class MainActivity : AppCompatActivity() {
             if(!mockData) {
 
             } else {
-
                 // mock data for testing purposes
 
+
+                // make sort bar visible
+                var sortBar = this.sortBar
+                sortBar.visibility = View.VISIBLE
+
+                // populate adapter with mock data
                 list.add(
                     WordItem(
                         "Clock Method",
@@ -91,10 +100,14 @@ class MainActivity : AppCompatActivity() {
         // Pass the data on for the next activity instance.
         outState.putParcelableArrayList("list", saveList)
 
-
         // test code - make sure data is retrievable
         val testList:ArrayList<WordItem>? = outState.getParcelableArrayList("list") // test outState list
         Log.d(TAG," getParcelable list count: ${testList?.count()}")
+
+        // save sortBar status
+        if(sortBar.visibility == View.VISIBLE){
+            outState.putBoolean("sortBar",true)
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -113,6 +126,8 @@ class MainActivity : AppCompatActivity() {
             recyclerView.adapter = adapter
             Log.d(TAG, " recyclerView restored. Adapter item count: "+ adapter.itemCount)
 //            Log.d(TAG, " recyclerView last word: "+ recyclerView?.getChildAt(adapter.itemCount-1)?.word?.text.toString() )
+
+            if(!restoreList.isEmpty()) sortBar.visibility = View.VISIBLE   // Enable sortBar, if there is data in it
         }
 
     }
