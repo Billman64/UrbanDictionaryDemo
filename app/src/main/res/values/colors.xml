@@ -8,6 +8,7 @@
     <color name="thumbsText">#888</color>
     <color name="word">#134FE6</color>
     <color name="definition">#333</color>
+    <color name="thumb">#000</color>
 
 <!-- defaults
     <color name="colorPrimary">#008577</color>

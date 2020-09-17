@@ -27,6 +27,7 @@ class WordAdapter(private val wordList: ArrayList<WordItem>): RecyclerView.Adapt
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {      // views + data loaded as recyclerView scrolls
         val currentItem = wordList[position]
 
+        // Assign values to the item's views.
         holder.wordView.text = currentItem.word
         holder.definitionView.text = currentItem.definition
         holder.thumbsUpView.text = currentItem.thumbsUp.toString()
