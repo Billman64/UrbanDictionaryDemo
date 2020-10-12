@@ -1,10 +1,9 @@
-package com.github.billman64.urbandictionarydemo.ModelView
+package com.github.billman64.urbandictionarydemo.ViewModel
 
 import android.content.Context
 import android.util.Log
 import androidx.loader.content.AsyncTaskLoader
 import com.github.billman64.urbandictionarydemo.Model.WordItem
-import com.github.billman64.urbandictionarydemo.R
 import org.json.JSONObject
 import java.lang.Exception
 import java.net.URL

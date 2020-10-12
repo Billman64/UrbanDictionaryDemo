@@ -2,17 +2,28 @@ package com.github.billman64.urbandictionarydemo.Model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 // word poko
 
 data class WordItem(var word:String, var definition:String, var thumbsUp:Int, var thumbsDown:Int) :
     Parcelable {
+
+    @SerializedName("word")
+    @Expose
     var mWord:String
         internal set
+    @SerializedName("definition")
+    @Expose
     var mDefinition:String
         internal set
+    @SerializedName("thumbs_up")
+    @Expose
     var mThumbsUp:Int
         internal set
+    @SerializedName("thumbs_down")
+    @Expose
     var mThumbsDown:Int
         internal set
 

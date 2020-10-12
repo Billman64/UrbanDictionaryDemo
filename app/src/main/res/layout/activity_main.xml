@@ -30,13 +30,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:inputType="text"
-            android:autofillHints="term"
+            android:autofillHints="search term"
             android:background="@drawable/rounded_corners"
             android:paddingLeft="16dp"
             android:paddingStart="16dp"
             android:paddingTop="8dp"
             android:layout_marginLeft="32dp"
             android:layout_marginStart="32dp"
+
+            android:nextFocusForward="@id/searchButton"
+            android:imeOptions="actionGo"
+
             tools:text="rat-licker"/>
 
         <!-- TODO:// fix: icon does not show on a small screen (3.3 WQVGA) Possible foregroundTint alternative needed. -->
@@ -57,7 +61,8 @@
             android:layout_marginRight="32dp"
             android:layout_marginEnd="32dp"
             app:layout_constraintLeft_toRightOf="@+id/searchTerm"
-            app:layout_constraintBottom_toBottomOf="@+id/searchTerm" />
+            app:layout_constraintBottom_toBottomOf="@+id/searchTerm"
+            android:focusedByDefault="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -70,7 +75,7 @@
         android:gravity="left"
         android:paddingBottom="8dp"
         android:paddingLeft="24dp"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/sort_label"
@@ -95,12 +100,21 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sortBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sortBar" />

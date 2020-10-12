@@ -1,4 +1,4 @@
-package com.github.billman64.urbandictionarydemo.ModelView
+package com.github.billman64.urbandictionarydemo.ViewModel
 
 import android.util.Log
 import java.io.BufferedReader
