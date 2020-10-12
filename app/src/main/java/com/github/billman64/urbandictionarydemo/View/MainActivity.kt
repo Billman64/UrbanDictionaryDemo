@@ -71,18 +71,21 @@ class MainActivity : AppCompatActivity() {
             // hide soft keyboard
             searchTerm.onEditorAction(EditorInfo.IME_ACTION_DONE)   //TODO: hide keyboard after Go key press
 
+            // get search term
+            var searchTermValue:String = searchTerm.text.toString()
+
             // reset list data
             list.clear()
 
             // Get new data - API call or mock data (if enabled)
-            if(!mockData) {
-                // API network call     //TODO: implement API network call - Retrofit via coroutine
+            if(!mockData && searchTermValue.isNotBlank()) {
+                // API network call
 
                 // show progressBar
                 progress_bar.visibility = View.VISIBLE
                 progress_bar.isShown
 
-
+                // Retrofit builder
                 val api = Retrofit.Builder()
 //                    .baseUrl(getString(R.string.api_url))
                     .baseUrl("https://mashape-community-urban-dictionary.p.rapidapi.com/")
@@ -96,68 +99,71 @@ class MainActivity : AppCompatActivity() {
                 GlobalScope.launch(Dispatchers.IO){
                     Log.d(TAG, " coroutine")
 
-//                    api.getWords().enqueue(object: Callback<List<WordItem?>?> {
-
-
                     try {
-//                        var response: Response<List<WordItem>> = api.getWords().awaitResponse()
-                        val response = api.getWords().awaitResponse()      //TODO: ERROR - null object reference
+                        val response = api.getWords(searchTermValue).awaitResponse()      //TODO: ERROR - null object reference
 
-//                        var response:Response<Gson<Array<WordItem>>> = api.getWords().awaitResponse()
-                        Log.d(TAG, " api.getWords(). response body: " + response.body().toString())
-
-//                    val response2: Response<WordItem> = api.getWords().awaitResponse()
+                        Log.d(TAG, " api.getWords(). Response success:${response.isSuccessful} body: " + response.body().toString().substring(0,100))
 
                         if (response.isSuccessful) {
                             //TODO: put successfully-found data in a LiveData object that will update views
 
-                            val rawJson:String = response.body().toString()
-                            Log.d(TAG," rawJson: " + rawJson)
-
                             Log.d(TAG, " response is successful! code+msg: " + response.code() +" "+ response.message())
-                            Log.d(TAG, " response is successful! body: " + response.body())
+                            Log.d(TAG, " response is successful! body: " + response.body().toString().substring(0,100))
+
+//                            val rawJson:String = response.body().toString()
+//                            Log.d(TAG," rawJson: " + rawJson.substring(0,80))
 
 
-                            val data = JSONArray(rawJson) // response.body()!!
-                            Log.d(TAG, " data response successful! Length of data: " + data.length())
+//                            val data = JsonArray().add(rawJson)
+                             val data = response.body()!!.getAsJsonArray("list")
+                            // val data = JSONArray(rawJson) // response.body()!!  // resolved error - org.json.JSONException: Value {"
+//                            Log.d(TAG, " data response successful! Length of data: " + data.size())
+//                            Log.d(TAG, " data response successful! Length of data: " + data.length())
+                            Log.d(TAG, " data response successful! Length of data: " + data.toString().substring(0,100))
 
 
+                            // add each word to list, before updating RecyclerView
+                            for(i in 0 until data.size()){
+//                            for(i in 0 until data.length()){
+                                var w = WordItem(
+//                                    data.getJSONObject(i).get("word").toString(),
 
-                                for(i in 0 until data.length()){
-                                    var w = WordItem(
-                                        data.getJSONObject(i).get("word").toString(),
-                                        data.getJSONObject(i).get("definition").toString(),
-                                        data.getJSONObject(i).getInt("thumbs_up"),
-                                        data.getJSONObject(i).getInt("thumbs_down")
-                                    )
-                                    list.add(w)
-                                }
-
-                                // update UI - via dispatcher to main thread
-                                withContext(Dispatchers.Main) {
-                                    progress_bar.visibility = View.GONE
-
-                                    recyclerView.adapter =
-                                        WordAdapter(list)    // update recyclerView
-
-                                    Log.d(TAG, " Adapter count: " + WordAdapter(list).itemCount)
-
-                                }
-
-
-                                // Reset sort thumbs color
-                                sort_thumbs_up.setColorFilter(
-                                    ContextCompat.getColor(
-                                        baseContext,
-                                        R.color.thumb
-                                    )
+                                    data[i].asJsonObject.get("word").toString(),
+                                    data[i].asJsonObject.get("definition").toString().replace("\\r", " ").replace("\\n", " "),
+                                        //TODO: .replace \" with " (regex?, ascii char. #34?)
+                                    data[i].asJsonObject.get("thumbs_up").asInt,
+                                    data[i].asJsonObject.get("thumbs_down").asInt
                                 )
-                                sort_thumbs_down.setColorFilter(
-                                    ContextCompat.getColor(
-                                        baseContext,
-                                        R.color.thumb
-                                    )
+                                list.add(w)
+                            }
+                            Log.d(TAG, " new list count: ${list.count()}")
+
+
+                            // update UI - via dispatcher to main thread
+                            withContext(Dispatchers.Main) {
+                                progress_bar.visibility = View.GONE
+
+                                recyclerView.adapter =
+                                    WordAdapter(list)    // update recyclerView
+
+                                Log.d(TAG, " Adapter count: " + WordAdapter(list).itemCount)
+
+                            }
+
+
+                            // Reset sort thumbs color
+                            sort_thumbs_up.setColorFilter(
+                                ContextCompat.getColor(
+                                    baseContext,
+                                    R.color.thumb
                                 )
+                            )
+                            sort_thumbs_down.setColorFilter(
+                                ContextCompat.getColor(
+                                    baseContext,
+                                    R.color.thumb
+                                )
+                            )
                         } else {
 
                             //TODO: if not successful, display an error
@@ -179,7 +185,7 @@ class MainActivity : AppCompatActivity() {
 
                         }
                     } catch(e:Exception){
-                        Log.d(TAG, " Net call exception: $e")
+                        Log.d(TAG, " Net call exception: ${e.toString().subSequence(0,100)}")
 
 
                         // update UI - via dispatcher to main thread
@@ -320,19 +326,54 @@ class MainActivity : AppCompatActivity() {
         progress_bar.isShown
 
         // populate adapter with mock data for testing purposes
-        list.add(WordItem(searchTerm.text.toString(), "The search term you just put in.",0,0))
+
+        if(searchTerm.text.toString().isBlank()) {
+            list.add(
+                WordItem(
+                    "Enter a search term",
+                    "You've left the search blank when you tapped on the button, so a search could not be done. To use, enter search term, then hit button.",
+                    0,
+                    0
+                )
+            )
+
+            list.add(
+                WordItem(
+                    "Sorting",
+                    "After search results come back, you can sort them in order by either thumbs up or thumbs down. This can be done by tapping on the thumb-up or thumb-down icons that appear. Try it now!",
+                    1,
+                    0
+                )
+            )
+
+            list.add(
+                WordItem(
+                    "Sample search terms",
+                    "LOL, Clock Method, IMHO, Yuzer, gis, Pizza Pop, 49-1, Amazheimer's",
+                    2,
+                    0
+                )
+            )
+        }
+
+
+
+
+        if(mockData) {
+            list.add(WordItem(searchTerm.text.toString(), "The search term you just put in.", 0, 0))
+            list.add(WordItem("aaa", "car club", 30, 40))
+            list.add(WordItem("bbb", "better business bureau", 12, 2))
+            list.add(WordItem("aa", "alcoholics anonymous", 50, 60))
+        }
+
         list.add(
             WordItem(
                 "Clock Method",
                 "A method of guessing on a multiple choice test that involves looking at the position of the second hand. If the hand is between 12 and 3 the guess is A. If the hand is between 3 and 6 the guess is B. Between 6 and 9 guess C. Between 9 and 12 guess D.",
                 10,
-                20
+                99
             )
         )
-
-        list.add(WordItem("aaa", "car club", 30, 40))
-        list.add(WordItem("bbb", "better business bureau", 12, 2))
-        list.add(WordItem("aa", "alcoholics anonymous", 50, 60))
 
         progress_bar.visibility = View.GONE
 

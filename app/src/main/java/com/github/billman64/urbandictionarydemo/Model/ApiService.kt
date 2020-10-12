@@ -8,14 +8,16 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
+import retrofit2.http.Query
 import java.lang.reflect.Type
 
 interface ApiService{
 
     @Headers(value = ["x-rapidapi-host: mashape-community-urban-dictionary.p.rapidapi.com",
-        "x-rapidapi-key: <insertApiKeyHere>" ])     //TODO: hide api key
-    @GET("define?term=wat")     //TODO: implement variable for term
-    fun getWords(): Call<JsonObject>
+        "x-rapidapi-key: insertApiKey" ])     //TODO: hide api key
+    @GET("define")
+    fun getWords(@Query("term") searchTerm:String): Call<JsonObject>
 
     //    fun getWords(): Call<Array<WordItem>>
     //    suspend fun getWords(): Response<List<WordItem>>
