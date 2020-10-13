@@ -129,8 +129,7 @@ class MainActivity : AppCompatActivity() {
 //                                    data.getJSONObject(i).get("word").toString(),
 
                                     data[i].asJsonObject.get("word").toString(),
-                                    data[i].asJsonObject.get("definition").toString().replace("\\r", " ").replace("\\n", " "),
-                                        //TODO: .replace \" with " (regex?, ascii char. #34?)
+                                    data[i].asJsonObject.get("definition").toString().replace("\\r", " ").replace("\\n", "\n").replace("\\", ""),
                                     data[i].asJsonObject.get("thumbs_up").asInt,
                                     data[i].asJsonObject.get("thumbs_down").asInt
                                 )
